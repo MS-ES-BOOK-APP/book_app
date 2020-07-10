@@ -21,12 +21,18 @@
 <!-- Give credit (and a link) to other people or resources that helped you build this application. -->
 -->
 
-Number and name of feature: __setup______________________________
+Number and name of feature: __lab_11______________________________
 
 Estimate of time needed to complete: _1:00____
 
-Start time: _____
+Start time: _5:00pm____
 
 Finish time: _____
 
 Actual time needed to complete: _____
+
+## Resources
+**FrontRow** 
+301n18
+07/08/2020
+https://frontrowviews.com/Home/Event/Play/5ec5bc82d28f0a0cf8044a4b
