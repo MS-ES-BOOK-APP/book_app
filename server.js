@@ -27,16 +27,16 @@ app.use(morgan("dev"));
 app.use(express.static('./public'));
 
 app.get('/', serverHandler);
-app.get('/other-stuff', handleOtherStuff);
-app.get('/hi', handleHi );
-app.get('/example', handleExample );
-app.get('/example', handleExample );
-app.get('/example', handleExample );
-app.get('/example', handleExample );
-app.get('/example', handleExample );
+// app.get('/other-stuff', handleOtherStuff);
+// app.get('/hi', handleHi );
+// app.get('/example', handleExample );
+// app.get('/example', handleExample );
+// app.get('/example', handleExample );
+// app.get('/example', handleExample );
+// app.get('/example', handleExample );
 
-app.use('*', handleNotFound);
-app.use(handleError);
+// app.use('*', handleNotFound);
+// app.use(handleError);
 
 /////////////////////// ROUTE HANDLERS
 function serverHandler(req,res){
