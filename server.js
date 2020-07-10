@@ -10,6 +10,7 @@ const pg = require('pg');
 const cors = require('cors');
 const morgan = require('morgan');
 const { response } = require('express');
+const { post } = require('superagent');
 
 /////////////////////// APPLICATION SETUP
 const app = express();
@@ -29,7 +30,7 @@ app.use(express.static('./public'));
 app.get('/', serverHandler);
 // app.get('/other-stuff', handleOtherStuff);
 // app.get('/hi', handleHi );
-// app.get('/example', handleExample );
+app.get('/searches/new', searchesHandler );
 // app.get('/example', handleExample );
 // app.get('/example', handleExample );
 // app.get('/example', handleExample );
@@ -39,12 +40,21 @@ app.get('/', serverHandler);
 // app.use(handleError);
 
 /////////////////////// ROUTE HANDLERS
+
 function serverHandler(req,res){
     res.status(200).send('This server is working!');
 };
 
 function handleHi(req,res){
     res.render('hello');
+};
+
+// function searchesHandler(req,res){
+//     app.post() something like this??
+// };
+    
+function searchesHandler(req,res){
+    res.render('pages/searches/new');
 };
 
 function notFoundHandler(req,res) {
