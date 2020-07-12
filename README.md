@@ -31,11 +31,11 @@ Enoch Strok - Student B/Soft. Dev./Author B
 **Actual time needed to complete:**
 
 **Number and name of feature:** lab_11: Item#3 in Trello
-**Estimate of time needed to complete:** Undefined
+**Estimate of time needed to complete:** Undefined.
 **Start time:** 6:20PM 07/11/2020
-**Finish time:** 
-**Actual time needed to complete:** 
-
+**Finish time:** 11:28PM 07/11/2020
+**Actual time needed to complete:** Not Complete.
+**Notes:** We got ALOT accomplished today!
 
 ## Resources
 **FrontRow** 
