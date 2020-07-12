@@ -1,38 +1,91 @@
 # Project Name
 
-**Author**: Your Name Goes Here
-**Version**: 1.0.0 (increment the patch/fix version number if you make more commits past your first submission)
+**Author**: Michelle Salazar & Enoch Strok
+**Version**: 1.0.2 (increment the patch/fix version number if you make more commits past your first submission)
 
 ## Overview
-<!-- Provide a high level overview of what this application is and why you are building it, beyond the fact that it's an assignment for a Code 301 class. (i.e. What's your problem domain?) -->
+Going to create an app that allows the user to search for a book via google's online library and be able to add it to their collection and make notes or add books that are not in the library.
 
 ## Getting Started
-<!-- What are the steps that a user must take in order to build this app on their own machine and get it running? -->
+Build the wireframe, connect to the api, send and post the data via full stack app to ejs, render it.
 
 ## Architecture
-<!-- Provide a detailed description of the application design. What technologies (languages, libraries, etc) you're using, and any other relevant design information. -->
+express, superagent, cors, ejs, morgan, pg.
 
 ## Change Log
-<!-- Use this area to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an examples:
+07-09-2020 9:45pm - Application main structure now has a fully-functional express server, with GET and POST routes for the book resource.
 
-01-01-2001 4:59pm - Application now has a fully-functional express server, with GET and POST routes for the book resource.
 
 ## Credits and Collaborations
-<!-- Give credit (and a link) to other people or resources that helped you build this application. -->
--->
+John Cokos - Lead Instructor
+Ray Ruazol - Assistant Instructor
+Michelle Salazar - Student A/Soft. Dev./Author A
+Enoch Strok - Student B/Soft. Dev./Author B
 
-Number and name of feature: __lab_11______________________________
 
-Estimate of time needed to complete: _1:00____
+## Features History ##
+**Number and name of feature:** lab_11
+**Estimate of time needed to complete:** 1:00
+**Start time:** 5:00pm
+**Finish time:**
+**Actual time needed to complete:**
 
-Start time: _5:00pm____
+**Number and name of feature:** lab_11: Item#3 in Trello
+**Estimate of time needed to complete:** Undefined
+**Start time:** 6:20PM 07/11/2020
+**Finish time:** 
+**Actual time needed to complete:** 
 
-Finish time: _____
-
-Actual time needed to complete: _____
 
 ## Resources
 **FrontRow** 
 301n18
 07/08/2020
 https://frontrowviews.com/Home/Event/Play/5ec5bc82d28f0a0cf8044a4b
+
+
+
+## API Documentation
+**Google: Books API**
+1. First I searched for google books api using google.com.
+2. Found information about OAuth 2.0: https://developers.google.com/books/docs/v1/using#APIKey
+3. Found the section about JavaScript: https://developers.google.com/identity/protocols/oauth2
+4. Opened Documentation for Javascipt: https://developers.google.com/identity/protocols/oauth2/javascript-implicit-flow
+5. Open the API Library in the Google API Console and searched for "book": https://console.developers.google.com/apis/library?pli=1&project=radiant-cycle-281700&folder&organizationId&q=book
+6. Enabled "Book API"
+7. Found instructions on useing API: https://developers.google.com/books/docs/v1/reference/?apix=true
+
+**Bookshelf**
+Method	        REST    URI *	                                    Description
+list	        GET     /users/userId/bookshelves	                Retrieves a list of public Bookshelf resource for the specified user.
+get	            GET     /users/userId/bookshelves/shelf	            Retrieves a specific Bookshelf resource for the specified user.
+* Relative to the base URI: https://www.googleapis.com/books/v1
+
+**Volume**
+Method	        REST    URI *	                                    Description
+get	            GET     /volumes/volumeId	                        Retrieves a Volume resource based on ID.
+list	        GET     /volumes?q={search terms}	                Performs a book search.
+* Relative to the base URI: https://www.googleapis.com/books/v1
+
+**Bookshelves.volumes**
+Method	        REST    URI *	                                    Description
+list	        GET     /users/userId/bookshelves/shelf/volumes	Retrieves volumes in a specific bookshelf for the specified user.
+* Relative to the base URI: https://www.googleapis.com/books/v1
+
+**Mylibrary.bookshelves**
+Method	        REST    URI *	                                    Description
+addVolume	    POST    /mylibrary/bookshelves/shelf/addVolume	    Adds a volume to a bookshelf.
+clearVolumes	POST    /mylibrary/bookshelves/shelf/clearVolumes	Clears all volumes from a bookshelf.
+get	            GET     /mylibrary/bookshelves/shelf	            Retrieves metadata for a specific bookshelf belonging to the authenticated user.
+list	        GET     /mylibrary/bookshelves	                    Retrieves a list of bookshelves belonging to the authenticated user.
+moveVolume	    POST    /mylibrary/bookshelves/shelf/moveVolume	    Moves a volume within a bookshelf.
+removeVolume	POST    /mylibrary/bookshelves/shelf/removeVolume	Removes a volume from a bookshelf.
+* Relative to the base URI: https://www.googleapis.com/books/v1
+
+**///// Selected Method /////**
+Method	        REST    URI *	                                    Description
+list	        GET     /volumes?q={search terms}	                Performs a book search.
+* Relative to the base URI: https://www.googleapis.com/books/v1
+Example: https://www.googleapis.com/books/v1/volumes?q={search terms}
+Postman Test 1: https://www.googleapis.com/books/v1/volumes?q=dogs
+Result: Object of results. Successful!
