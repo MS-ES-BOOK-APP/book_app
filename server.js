@@ -99,39 +99,38 @@ function searchesHandler(req, res) {
 
 //////////// SEARCH RESULT HANDLER
 function searchResultHandler(req, res) {
-    console.log('////////////////////////// NEW SEARCH //////////////////////////')
-    console.log(req.body);
+    // console.log('////////////////////////// NEW SEARCH //////////////////////////')
+    // console.log(req.body);
     
     const API = `https://www.googleapis.com/books/v1/volumes?q=${req.body.title}`;
     
-    console.log('//////// Searching API... ////////')
+    // console.log('//////// Searching API... ////////')
     superagent
     .get(API)
-    .then(console.log(API))
+    // .then(console.log(API))
     .then(data => {
         let bookItems = data.body.items;
         // let bookRoot = data.body.items.volumeInfo;
 
         //make a .map or forEach loop that loops through each Item/book, send it through the constructor.
         
-        console.log(bookItems);
+        // console.log(bookItems);
         // response.status(200).send(bookItems);
         
         //MADE A COUNTER FOR HOW MANY BOOKS WERE FOUND. IT COUNTS HOW MANY OBJECTS THERE WERE. NOT SURE IF 10 IS THE LIMIT.
         
-        let i = 0;
+        // let i = 0;
         let filteredSearchResults = [];
         bookItems.forEach(data => {
             let constructedBookItems = new bookSearch(data);
-            console.log('///////////////////constructed book items: /////////////////', constructedBookItems);
+            // console.log('///////////////////constructed book items: /////////////////', constructedBookItems);
             filteredSearchResults.push(constructedBookItems);
-            i++;
+            // i++;
         });
-        console.log('number of searches found: ',i);
-
+        // console.log('number of searches found: ',i);
         res.send(`The book title that you searched for was: ${req.body.title} by author: ${req.body.author}`);
     })
-    .then(console.log('//////// API Search Completed... ////////'))
+    // .then(console.log('//////// API Search Completed... ////////'))
     };
 
 
