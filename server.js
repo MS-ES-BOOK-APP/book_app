@@ -34,59 +34,89 @@ app.use(express.urlencoded({
 
 /////////////////////// ROUTE DEFINITIONS
 app.use(express.static('./public'));
-
-app.get('/', serverHandler);
-// app.get('/other-stuff', handleOtherStuff);
-// app.get('/hi', handleHi );
-app.get('/searches/new', searchesHandler);
-app.post('/searches', searchResultHandler);
-// app.post('/searches', (req,res) => {
-//     console.log('////////////////////////// NEW SEARCH //////////////////////////')
-//     console.log(req.body);
-//     res.send(`The book title that you searched for was: ${req.body.title} by author: ${req.body.author} `);
-// });
-
-
-
-// app.post('/searches/new', searchesHandler );
-// app.get('/example', handleExample );
-// app.get('/example', handleExample );
-// app.get('/example', handleExample );
-// app.get('/example', handleExample );
-
 // app.use('*', handleNotFound);
 // app.use(handleError);
 
+app.get('/', serverHandler);
+app.get('/searches/new', searchesPageHandler);
+app.post('/searches', searchResultHandler);
+// app.get('/example', handleExample );
+
+
+
 /////////////////////// ROUTE HANDLERS
 
-
-
+//////////// SERVER HANDLER
 function serverHandler(req, res) {
     res.status(200).send('This server is working!');
 };
 
-
-
-function handleHi(req, res) {
-    res.render('hello');
-};
-
-// function searchesHandler(req,res){
-//     app.post() something like this??
-// };
-
-
-
-function searchesHandler(req, res) {
+//////////// SEARCH PAGE HANDLER
+function searchesPageHandler(req, res) {
     res.render('pages/searches/new');
 };
 
+//////////// SEARCH RESULT HANDLER
+function searchResultHandler(req, res) {
+    console.log('////////////////////////// NEW SEARCH //////////////////////////')
+
+    const API = `https://www.googleapis.com/books/v1/volumes?q=${req.body.title}`;
+
+    superagent
+        .get(API)
+        .then(data => {
+            let bookItems = data.body.items;
+            
+            ////////.map Method
+            let filteredSearchResults = bookItems.map((data) => new bookSearch(data));
+            
+            //////////// forEach Method
+            // let filteredSearchResults = [];
+            // let i = 0;
+            // bookItems.forEach(data => {
+            //     let constructedBookItems = new bookSearch(data);
+            //     // console.log('///////////////////constructed book items: /////////////////', constructedBookItems);
+            //     filteredSearchResults.push(constructedBookItems);
+            //     // i++;
+            // });
+
+            //////////// CONSOLE LOG CHECK
+            console.log(filteredSearchResults);
+            res.json(filteredSearchResults);
+            
+            //constructor function 
+            function bookSearch(obj) {
+                this.title = obj.volumeInfo.title;
+                this.author = obj.volumeInfo.authors;
+                this.description = obj.volumeInfo.description;
+                this.image = obj.volumeInfo.imageLinks.thumbnail;
+                this.isbn = ((obj.volumeInfo.industryIdentifiers) ? obj.volumeInfo.industryIdentifiers : 'no isbn') || 'error no isbn';
+            };
+                        
+        })
+};
+    
+
+//////////// SEARCH RESULT HANDLER
+function notFoundHandler(req, res) {
+    response.status(404).send('Error 404: Something went wrong yo!');
+};
+
+    
+//////////// PORT LISTENER
+app.listen(PORT, () => console.log(`App is listening on ${PORT}`));
+    
 
 
-// function APIsearchHandler(userSearch, response) {
-//     const API = `https://www.googleapis.com/books/v1/volumes?q=${req.body.title}`;
 
-//     console.log('//////// Searching API... ////////')
+    
+    /////////////////////// OLD CODE SAVED FOR EXAMPLES ///////////////////////
+    
+    // res.send(`The book title that you searched for was: ${req.body.title} by author: ${req.body.author}`);
+    // function APIsearchHandler(userSearch, response) {
+        //     const API = `https://www.googleapis.com/books/v1/volumes?q=${req.body.title}`;
+        
+        //     console.log('//////// Searching API... ////////')
 //     superagent
 //         .get(API)
 //         .then(APIdata => {
@@ -96,69 +126,8 @@ function searchesHandler(req, res) {
 //         .then(console.log('//////// API Search Completed... ////////'))
 // };
 
-
-//////////// SEARCH RESULT HANDLER
-function searchResultHandler(req, res) {
-    // console.log('////////////////////////// NEW SEARCH //////////////////////////')
-    // console.log(req.body);
-    
-    const API = `https://www.googleapis.com/books/v1/volumes?q=${req.body.title}`;
-    
-    // console.log('//////// Searching API... ////////')
-    superagent
-    .get(API)
-    // .then(console.log(API))
-    .then(data => {
-        let bookItems = data.body.items;
-        // let bookRoot = data.body.items.volumeInfo;
-
-        //make a .map or forEach loop that loops through each Item/book, send it through the constructor.
-        
-        // console.log(bookItems);
-        // response.status(200).send(bookItems);
-        
-        //MADE A COUNTER FOR HOW MANY BOOKS WERE FOUND. IT COUNTS HOW MANY OBJECTS THERE WERE. NOT SURE IF 10 IS THE LIMIT.
-        
-        // let i = 0;
-        let filteredSearchResults = [];
-        bookItems.forEach(data => {
-            let constructedBookItems = new bookSearch(data);
-            // console.log('///////////////////constructed book items: /////////////////', constructedBookItems);
-            filteredSearchResults.push(constructedBookItems);
-            // i++;
-        });
-        // console.log('number of searches found: ',i);
-        res.send(`The book title that you searched for was: ${req.body.title} by author: ${req.body.author}`);
-    })
-    // .then(console.log('//////// API Search Completed... ////////'))
-    };
-
-
-
-function notFoundHandler(req, res) {
-    response.status(404).send('Error 404: Something went wrong yo!');
-};
-
-//constructor function 
-
-function bookSearch(obj) {
-    this.title = obj.volumeInfo.title;
-    this.author = obj.volumeInfo.authors;
-    this.description = obj.volumeInfo.description;
-    this.image = obj.volumeInfo.imageLinks.thumbnail;
-    // this.isbn = obj.volumeInfo.industryIdentifiers.identifiers.identifier;
-    this.isbn = ((obj.volumeInfo.industryIdentifiers) ? obj.volumeInfo.industryIdentifiers : 'no isbn') || 'error no isbn';
-    // this.isbn = obj.volumeInfo.industryIdentifiers.[{identifiers,identifiers}];
-
-};
-
-// BTW, the route is "data.body.items", that's how the data populates. That should probably automatically be passed through the 'obj', like you have it.
-// It will turn into data.body.items.title, data.body.items.authors.. etc... Nice Work!
-
-// BRB 
-
-// Stopped at https://frontrowviews.com/Home/Event/Play/5ec5bc82d28f0a0cf8044a4b @ 00:54:35 YSS 8:12:56PM 07/09/2020
-
-
-
-app.listen(PORT, () => console.log(`App is listening on ${PORT}`));
+// app.post('/searches', (req,res) => {
+//     console.log('////////////////////////// NEW SEARCH //////////////////////////')
+//     console.log(req.body);
+//     res.send(`The book title that you searched for was: ${req.body.title} by author: ${req.body.author} `);
+// });
