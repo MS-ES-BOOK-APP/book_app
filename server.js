@@ -24,6 +24,9 @@ app.use(cors());
 /////////////////////// MORGAN - REQUEST LOGGER - SHOWS MORE DETAIL ON EVERY PAGE LOAD.
 app.use(morgan("dev"));
 
+/////////////////////// NEED THIS IN ORDER TO DEAL WITH FORMS.
+app.use( express.urlencoded({extended: true}));
+
 /////////////////////// ROUTE DEFINITIONS
 app.use(express.static('./public'));
 
@@ -31,6 +34,14 @@ app.get('/', serverHandler);
 // app.get('/other-stuff', handleOtherStuff);
 // app.get('/hi', handleHi );
 app.get('/searches/new', searchesHandler );
+app.post('/searches', (req,res) => {
+    console.log('////////////////////////// NEW SEARCH //////////////////////////')
+    console.log(req.body);
+    res.send(`The book title that you searched for was: ${req.body.title} by author: ${req.body.author} `);
+});
+
+
+// app.post('/searches/new', searchesHandler );
 // app.get('/example', handleExample );
 // app.get('/example', handleExample );
 // app.get('/example', handleExample );
