@@ -27,27 +27,12 @@
     </form>
     <h2>Search Query: 
     </h2>
-    <div>Title: <%= searchTitle %> </div>
-    <div>Author: <%= searchAuthor %> </div>
 
 
 <h2>Results:</h2>
-<% books.forEach( book => { %>
-    -----------------------------------------------------
-    <ul> 
-        <p><img src="<%= book.image;  %>"</p>
-        <h3>Title: <%= book.title;  %> </h3>
-        <p>Author: <%= book.author;  %> </p>
-        <p>Description: <%= book.description;  %> </p>
-        <h4>ISBN NUMBER A</h4>
-        <p>TYPE: <%= book.isbn1.type;  %></p>
-        <p><%= book.isbn1.identifier;  %> </p>
-        <a href="<%= book.preview %>"> Preview the Book Online! </a>
-    </ul>
-    <br>
-<% }); %>
-
-
+<br>
+<br>
+<h1>"We're Sorry! We could not find any books by that name or author!</h1>
  
 
 </div>
