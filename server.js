@@ -34,13 +34,17 @@ app.use(express.urlencoded({
 
 /////////////////////// ROUTE DEFINITIONS
 app.use(express.static('./public'));
-// app.use('*', handleNotFound);
-// app.use(handleError);
 
 app.get('/', serverHandler);
 app.get('/searches/new', searchesPageHandler);
+app.get('/bad', (req, res) => {
+    throw new Error('Testing Forced Errors');
+  });
+
 app.post('/searches', searchResultHandler);
 // app.get('/example', handleExample );
+app.use('*', handleNotFound);
+app.use(handleError);
 
 
 
@@ -59,7 +63,6 @@ function searchesPageHandler(req, res) {
 //////////// SEARCH RESULT HANDLER
 function searchResultHandler(req, res) {
     console.log('////////////////////////// NEW SEARCH //////////////////////////')
-
     const API = `https://www.googleapis.com/books/v1/volumes?q=${req.body.title}`;
 
     superagent
@@ -87,19 +90,30 @@ function searchResultHandler(req, res) {
             //constructor function 
             function bookSearch(obj) {
                 this.title = obj.volumeInfo.title;
-                this.author = obj.volumeInfo.authors;
-                this.description = obj.volumeInfo.description;
-                this.image = obj.volumeInfo.imageLinks.thumbnail;
-                this.isbn = ((obj.volumeInfo.industryIdentifiers) ? obj.volumeInfo.industryIdentifiers : 'no isbn') || 'error no isbn';
+                // this.author = obj.volumeInfo.authors;
+                this.author = ((obj.volumeInfo.authors) ? obj.volumeInfo.authors : 'No author provided') || 'Error, no author';
+                this.description = ((obj.volumeInfo.description) ? obj.volumeInfo.description : 'No description provided') || 'Error, no description';
+                // this.description = obj.volumeInfo.description;
+                // this.image = obj.volumeInfo.imageLinks.thumbnail;
+                this.image = ((obj.volumeInfo.imageLinks) ? obj.volumeInfo.imageLinks.thumbnail : 'https://i.imgur.com/J5LVHEL.jpg') || 'error no thumbnail';
+                //need to make an isbn filter
+                this.isbn = ((obj.volumeInfo.industryIdentifiers) ? obj.volumeInfo.industryIdentifiers[0] : 'no isbn') || 'error no isbn';
+                // this.isbn = ((obj.volumeInfo.industryIdentifiers) ? obj.volumeInfo.industryIdentifiers : 'no isbn') || 'error no isbn';
             };
                         
         })
 };
     
 
-//////////// SEARCH RESULT HANDLER
-function notFoundHandler(req, res) {
+//////////// SEARCH NO FOUND HANDLER
+function handleNotFound(req, res) {
     response.status(404).send('Error 404: Something went wrong yo!');
+};
+
+//////////// SEARCH NO FOUND HANDLER
+function handleError(error, req, res, next) {
+    res.render('pages/error')
+    // response.status(500).send('Error 500: Some error occured');
 };
 
     
