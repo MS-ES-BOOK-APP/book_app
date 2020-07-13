@@ -8,12 +8,6 @@ const superagent = require('superagent');
 const pg = require('pg');
 const cors = require('cors');
 const morgan = require('morgan');
-// const {
-//     response
-// } = require('express');
-// const {
-//     post
-// } = require('superagent');
 
 /////////////////////// APPLICATION SETUP
 const app = express();
@@ -77,10 +71,8 @@ function searchResultHandler(req, res) {
             let searchAuthor = req.body.author;
 
             if(searchObject.totalItems === 0){
-                console.log('/////////////////////////////nothing found!!!!!///////////////////////////')
-                res.render('pages/searches/old');
+                res.render('pages/searches/notfound');
             }else{
-                console.log('/////////////////////////////something found!!!///////////////////////////')
                 runFilter();
                 res.render('pages/searches/show',
                 {books: filteredSearchResults, searchTitle, searchAuthor},
@@ -90,8 +82,6 @@ function searchResultHandler(req, res) {
                 filteredSearchResults = bookItems.map((data) => new bookSearch(data));
             };
             
-            // let filteredSearchResults = bookItems.map((data) => new bookSearch(data));
-
             //////////// forEach Method
             // let filteredSearchResults = [];
             // bookItems.forEach(data => {
@@ -128,7 +118,7 @@ function handleError(error, req, res, next) {
 
 //////////// SEARCH NOT FOUND HANDLER
 function handleSearchNotFound(req, res) {
-    res.render('pages/old');
+    res.render('pages/searches/old');
 };
 
 
