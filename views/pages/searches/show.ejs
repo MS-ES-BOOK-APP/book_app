@@ -2,20 +2,40 @@
 <html>
 <head> 
     <title>newbook</title>
+    <link rel="stylesheet" href="../styles/reset.css">
+    <link rel="stylesheet" href="../styles/base.css">
+    <link rel="stylesheet" href="../styles/layout.css">
+    <link rel="stylesheet" href="../styles/modules.css">
 </head>
 
 <body>
-<form method="post" action="/searches/show">
-    <div>
-        <input name="title" placeholder="book_title"></input>
+    <div class ="main">
+        <nav class="header">
+            <h1>Best Books</h1>
+            <section class="menu">menu</section>
+        </nav>
+        <div class="page_title">
+            <h2>Search Results:</h2>
+        </div>
+        <div class="form">
+             <form class="flex-grid" method="post" action="/searches/show">
+                <div>
+                <% books.forEach( book => { %>
+                    <ul> 
+                        <section class="section1"><img src="<%= book.image;  %>"></section>
+                        <section class="section2"></section><h3>Title: <%= book.title;  %> </h3></section>
+                        <section class="section3">Author: <%= book.author;  %></section>
+                        <section class="section4">Description: <%= book.description;  %></section>
+                        <section class="section5">Isbn: <%= book.isbn.identifier;  %></section>
+                    </ul>
+                    <br>
+                <% }); %>
+                </div>
+           
+            </form>
+        </div>
+        <footer>End</footer>
     </div>
-    <div>
-        <input name="author" placeholder="book_author"></input>
-    </div>
-    <div><button type="submit">Search</button>
-
-    </div>
-</form>
 
 </body>
 </html>

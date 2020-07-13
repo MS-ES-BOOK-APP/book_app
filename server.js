@@ -18,7 +18,7 @@ const {
 /////////////////////// APPLICATION SETUP
 const app = express();
 app.set('view engine', 'ejs');
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
 /////////////////////// APPLICATION MIDDLEWARE (HELPERS)
 /////////////////////// CORS
