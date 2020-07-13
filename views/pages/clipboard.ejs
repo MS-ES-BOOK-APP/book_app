@@ -11,3 +11,11 @@
 
 <div>Title: <%= formdata.title %> </div>
 <div>Author: <%= formdata.author %> </div>
+
+<%if(book.isbn2.identifier === '') {
+    <%='' %>
+    <%} else {            
+        <h4>ISBN NUMBER B</h4>
+        <p><%=TYPE: book.isbn2.type;%> </p>
+        <p><%=book.isbn2.identifier;%> </p>
+    <%};%>

@@ -8,12 +8,12 @@ const superagent = require('superagent');
 const pg = require('pg');
 const cors = require('cors');
 const morgan = require('morgan');
-const {
-    response
-} = require('express');
-const {
-    post
-} = require('superagent');
+// const {
+//     response
+// } = require('express');
+// const {
+//     post
+// } = require('superagent');
 
 /////////////////////// APPLICATION SETUP
 const app = express();
@@ -35,7 +35,7 @@ app.use(express.urlencoded({
 /////////////////////// ROUTE DEFINITIONS
 app.use(express.static('./public'));
 
-app.get('/', serverHandler);
+app.get('/', indexEjsHandler);
 app.get('/searches/new', searchesPageHandler);
 app.post('/searches', searchResultHandler);
 app.get('/bad', (req, res) => {
@@ -47,12 +47,11 @@ app.use('*', handleNotFound);
 app.use(handleError);
 
 
-
 /////////////////////// ROUTE HANDLERS
 
 //////////// SERVER HANDLER
-function serverHandler(req, res) {
-    res.status(200).send('This server is working!');
+function indexEjsHandler(req, res) {
+    res.status(200).render('pages/index');
 };
 
 //////////// SEARCH PAGE HANDLER
@@ -63,71 +62,78 @@ function searchesPageHandler(req, res) {
 //////////// SEARCH RESULT HANDLER
 function searchResultHandler(req, res) {
     console.log('////////////////////////// NEW SEARCH //////////////////////////')
-    const API = `https://www.googleapis.com/books/v1/volumes?q=${req.body.title}`;
+    const API2 = `https://www.googleapis.com/books/v1/volumes?q=intitle:${req.body.title}+inauthor:${req.body.author}`;
 
     superagent
-        .get(API)
+        .get(API2)
         .then(data => {
+            let searchObject = data.body;
             let bookItems = data.body.items;
+            let filteredSearchResults = [];
+            // console.log(bookItems);
             
             ////////.map Method
-            let filteredSearchResults = bookItems.map((data) => new bookSearch(data));
+            let searchTitle = req.body.title;
+            let searchAuthor = req.body.author;
+
+            if(searchObject.totalItems === 0){
+                console.log('/////////////////////////////nothing found!!!!!///////////////////////////')
+                res.render('pages/searches/old');
+            }else{
+                console.log('/////////////////////////////something found!!!///////////////////////////')
+                runFilter();
+                res.render('pages/searches/show',
+                {books: filteredSearchResults, searchTitle, searchAuthor},
+                );
+            };
+            function runFilter(){
+                filteredSearchResults = bookItems.map((data) => new bookSearch(data));
+            };
             
+            // let filteredSearchResults = bookItems.map((data) => new bookSearch(data));
+
             //////////// forEach Method
             // let filteredSearchResults = [];
             // bookItems.forEach(data => {
-            //     let constructedBookItems = new bookSearch(data);
-            //     filteredSearchResults.push(constructedBookItems);
-            // });
-
-            //////////// CONSOLE LOG CHECK
-            console.log(filteredSearchResults);
-            // res.json(filteredSearchResults);
-            // let objTitle = filteredSearchResults[0].title;
-            let searchTitle = req.body.title;
-            let searchAuthor = req.body.author;
-            res.render('pages/searches/show',
-            {books: filteredSearchResults, searchTitle, searchAuthor},
-            );
-            // console.log('//////////////// Line 87 /////////////////: ',books.filteredSearchResults);
-            //  {formdata: req.body} 
-            // , 
-            //constructor function 
-
-            function bookSearch(obj) {
-                this.title = obj.volumeInfo.title;
-                this.author = ((obj.volumeInfo.authors) ? obj.volumeInfo.authors : 'No author provided') || 'Error, no author';
-                this.description = ((obj.volumeInfo.description) ? obj.volumeInfo.description : 'No description provided') || 'Error, no description';
-                this.image = ((obj.volumeInfo.imageLinks) ? obj.volumeInfo.imageLinks.thumbnail : 'https://i.imgur.com/J5LVHEL.jpg') || 'error no thumbnail';
-                this.isbn = ((obj.volumeInfo.industryIdentifiers) ? obj.volumeInfo.industryIdentifiers[0] : 'no isbn') || 'error no isbn';
-                // this.author = obj.volumeInfo.authors;
-                // this.description = obj.volumeInfo.description;
-                // this.image = obj.volumeInfo.imageLinks.thumbnail;
-                //need to make an isbn filter
-                // this.isbn = ((obj.volumeInfo.industryIdentifiers) ? obj.volumeInfo.industryIdentifiers : 'no isbn') || 'error no isbn';
-            };
-            
+                //     let constructedBookItems = new bookSearch(data);
+                //     filteredSearchResults.push(constructedBookItems);
+                // });
+                
+                
+                function bookSearch(obj) {
+                    this.title = obj.volumeInfo.title;
+                    this.author = ((obj.volumeInfo.authors) ? obj.volumeInfo.authors : 'No author provided') || 'Error, no author';
+                    this.description = ((obj.volumeInfo.description) ? obj.volumeInfo.description : 'No description provided') || 'Error, no description';
+                    this.image = ((obj.volumeInfo.imageLinks) ? obj.volumeInfo.imageLinks.thumbnail.replace("http://", "https://") : 'https://i.imgur.com/J5LVHEL.jpg') || 'error no thumbnail';
+                    this.isbn1 = ((obj.volumeInfo.industryIdentifiers) ? obj.volumeInfo.industryIdentifiers[0] : 'no isbn') || 'error no isbn';
+                    this.isbn2 = ((obj.volumeInfo.industryIdentifiers) ? obj.volumeInfo.industryIdentifiers[1] : 'no isbn') || 'error no isbn';
+                    this.preview = ((obj.volumeInfo.previewLink) ? obj.volumeInfo.previewLink.replace("http://", "https://") : 'no preview link') || 'error no preview';
+                };
+                
+                // console.log('filteredSearchResults at: ',filteredSearchResults);
         })
+        
 };
     
-
-//////////// SEARCH NO FOUND HANDLER
+//////////// 404 HANDLER
 function handleNotFound(req, res) {
-    response.status(404).send('Error 404: Something went wrong yo!');
+    res.status(404).send('Error 404: Something went wrong yo!');
 };
 
-//////////// SEARCH NO FOUND HANDLER
+////////////  500 HANDLER
 function handleError(error, req, res, next) {
-    let errorMessage = 'this is a test';
-    res.render('pages/error')
+    res.render('pages/error');
     // response.status(500).send('Error 500: Some error occured');
 };
 
-    
+//////////// SEARCH NOT FOUND HANDLER
+function handleSearchNotFound(req, res) {
+    res.render('pages/old');
+};
+
+
 //////////// PORT LISTENER
 app.listen(PORT, () => console.log(`App is listening on ${PORT}`));
-    
-
 
 
     
