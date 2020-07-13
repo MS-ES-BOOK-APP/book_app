@@ -1,21 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head> 
-    <title>newbook</title>
+    <title>Show.ejs</title>
 </head>
 
 <body>
-<form method="post" action="/searches/show">
-    <div>
-        <input name="title" placeholder="book_title"></input>
-    </div>
-    <div>
-        <input name="author" placeholder="book_author"></input>
-    </div>
-    <div><button type="submit">Search</button>
 
-    </div>
-</form>
+    
+    
+    <h1>This is a test of show.ejs</h1>
+    <br>
+    <form method="post" action="/searches">
+        <div>
+            <input name="title" placeholder="book_title"></input>
+        </div>
+        <div>
+            <input name="author" placeholder="book_author"></input>
+        </div>
+        <div><button type="submit">Search</button>
+    
+        </div>
+    </form>
+    <h2>Search Query: 
+    </h2>
+    <div>Title: <%= searchTitle %> </div>
+    <div>Author: <%= searchAuthor %> </div>
 
+
+<h2>Results:</h2>
+<% books.forEach( book => { %>
+    -----------------------------------------------------
+    <ul> 
+        <p><img src="<%= book.image;  %>"</p>
+        <h3>Title: <%= book.title;  %> </h3>
+        <p>Author: <%= book.author;  %> </p>
+        <p>Description: <%= book.description;  %> </p>
+        <p>Isbn: <%= book.isbn.identifier;  %> </p>
+    </ul>
+    <br>
+<% }); %>
+
+
+ 
+
+</div>
+
+<script src="server.js"></script>
 </body>
 </html>

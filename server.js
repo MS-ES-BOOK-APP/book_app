@@ -18,7 +18,7 @@ const {
 /////////////////////// APPLICATION SETUP
 const app = express();
 app.set('view engine', 'ejs');
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
 /////////////////////// APPLICATION MIDDLEWARE (HELPERS)
 /////////////////////// CORS
@@ -37,11 +37,11 @@ app.use(express.static('./public'));
 
 app.get('/', serverHandler);
 app.get('/searches/new', searchesPageHandler);
+app.post('/searches', searchResultHandler);
 app.get('/bad', (req, res) => {
     throw new Error('Testing Forced Errors');
   });
 
-app.post('/searches', searchResultHandler);
 // app.get('/example', handleExample );
 app.use('*', handleNotFound);
 app.use(handleError);
@@ -75,32 +75,38 @@ function searchResultHandler(req, res) {
             
             //////////// forEach Method
             // let filteredSearchResults = [];
-            // let i = 0;
             // bookItems.forEach(data => {
             //     let constructedBookItems = new bookSearch(data);
-            //     // console.log('///////////////////constructed book items: /////////////////', constructedBookItems);
             //     filteredSearchResults.push(constructedBookItems);
-            //     // i++;
             // });
 
             //////////// CONSOLE LOG CHECK
             console.log(filteredSearchResults);
-            res.json(filteredSearchResults);
-            
+            // res.json(filteredSearchResults);
+            // let objTitle = filteredSearchResults[0].title;
+            let searchTitle = req.body.title;
+            let searchAuthor = req.body.author;
+            res.render('pages/searches/show',
+            {books: filteredSearchResults, searchTitle, searchAuthor},
+            );
+            // console.log('//////////////// Line 87 /////////////////: ',books.filteredSearchResults);
+            //  {formdata: req.body} 
+            // , 
             //constructor function 
+
             function bookSearch(obj) {
                 this.title = obj.volumeInfo.title;
-                // this.author = obj.volumeInfo.authors;
                 this.author = ((obj.volumeInfo.authors) ? obj.volumeInfo.authors : 'No author provided') || 'Error, no author';
                 this.description = ((obj.volumeInfo.description) ? obj.volumeInfo.description : 'No description provided') || 'Error, no description';
+                this.image = ((obj.volumeInfo.imageLinks) ? obj.volumeInfo.imageLinks.thumbnail : 'https://i.imgur.com/J5LVHEL.jpg') || 'error no thumbnail';
+                this.isbn = ((obj.volumeInfo.industryIdentifiers) ? obj.volumeInfo.industryIdentifiers[0] : 'no isbn') || 'error no isbn';
+                // this.author = obj.volumeInfo.authors;
                 // this.description = obj.volumeInfo.description;
                 // this.image = obj.volumeInfo.imageLinks.thumbnail;
-                this.image = ((obj.volumeInfo.imageLinks) ? obj.volumeInfo.imageLinks.thumbnail : 'https://i.imgur.com/J5LVHEL.jpg') || 'error no thumbnail';
                 //need to make an isbn filter
-                this.isbn = ((obj.volumeInfo.industryIdentifiers) ? obj.volumeInfo.industryIdentifiers[0] : 'no isbn') || 'error no isbn';
                 // this.isbn = ((obj.volumeInfo.industryIdentifiers) ? obj.volumeInfo.industryIdentifiers : 'no isbn') || 'error no isbn';
             };
-                        
+            
         })
 };
     
@@ -112,6 +118,7 @@ function handleNotFound(req, res) {
 
 //////////// SEARCH NO FOUND HANDLER
 function handleError(error, req, res, next) {
+    let errorMessage = 'this is a test';
     res.render('pages/error')
     // response.status(500).send('Error 500: Some error occured');
 };
