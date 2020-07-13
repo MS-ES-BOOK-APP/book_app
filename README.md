@@ -37,6 +37,13 @@ Enoch Strok - Student B/Soft. Dev./Author B
 **Actual time needed to complete:** Not Complete.
 **Notes:** We got ALOT accomplished today!
 
+**Number and name of feature:** lab_11: Item#3,4,6 in Trello
+**Estimate of time needed to complete:** Undefined.
+**Start time:** 8:00PM 07/12/2020
+**Finish time:** 5:48AM 07/13/2020
+**Actual time needed to complete:** 9 hours 48 minutes!!!!
+**Notes:** App is complete! Except the CSS!
+
 ## Resources
 **FrontRow** 
 301n18
