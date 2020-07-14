@@ -1,4 +1,41 @@
 * {
-    background-color:rgb(171, 206, 211);
-    font-size: medium;
+    background-color: black;
+    color: white;
+}
+
+.flex-grid{
+    background-color: darkgrey;
+}
+.header{
+    float: left;
+    background-color: black;
+}
+h1{
+    text-align: start;
+    font-size: 20px;
+    /* padding: 1px; */
+}
+.menu{
+    padding: 1px;
+    float: right;
+}
+.search_title{
+    background-color: darkgreen;
+    /* padding: 1px; */
+    align-content: center;
+}
+.page_title{
+    background-color: darkgreen;
+    /* padding: 1px; */
+    align-content: center;
+}
+.form{
+    background-color: grey;
+}
+input{
+    background-color: white;
+}
+button{
+    background-color: teal;
+    width: 100px;
 }

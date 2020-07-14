@@ -1,25 +1,36 @@
 <!DOCTYPE html>
 <html>
+
 <head> 
-    <title>newbook</title>
+    <title>New Book</title>
     <link rel="stylesheet" href="../styles/reset.css">
-    <link rel="stylesheet" href="../styles/modules.css">
     <link rel="stylesheet" href="../styles/base.css">
     <link rel="stylesheet" href="../styles/layout.css">
+    <link rel="stylesheet" href="../styles/modules.css">
 </head>
 
 <body>
-<form method="post" action="/searches">
-    <div>
-        <input name="title" placeholder="Book Title"></input>
+    <div class="flex-grid">
+        <nav class="header">
+            <h1>Best Books</h1>
+            <section class="menu">menu</section>
+        </nav>
+        <div class="search_title">
+            <h2>Search by title or Author:</h2>
+        </div>
+        <form class="form" method="post" action="/searches">
+            <div>
+                <input name="title" placeholder="Book Title"></input>
+            </div>
+            <div>
+                <input name="author" placeholder="Book Author"></input>
+            </div>
+            <div>
+                <button type="submit">Search</button>
+            </div>
+        </form>
+        <footer>End</footer>
     </div>
-    <div>
-        <input name="author" placeholder="Book Author"></input>
-    </div>
-    <div><button type="submit">Search</button>
-
-    </div>
-</form>
 
 </body>
 </html>
