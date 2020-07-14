@@ -34,7 +34,7 @@ app.get('/searches/new', searchesPageHandler);
 app.post('/searches', searchResultHandler);
 app.get('/bad', (req, res) => {
     throw new Error('Testing Forced Errors');
-  });
+});
 
 // app.get('/example', handleExample );
 app.use('*', handleNotFound);
@@ -65,46 +65,36 @@ function searchResultHandler(req, res) {
             let bookItems = data.body.items;
             let filteredSearchResults = [];
             // console.log(bookItems);
-            
+
             ////////.map Method
             let searchTitle = req.body.title;
             let searchAuthor = req.body.author;
 
-            if(searchObject.totalItems === 0){
+            if (searchObject.totalItems === 0) {
                 res.render('pages/searches/notfound');
-            }else{
+            } else {
                 runFilter();
-                res.render('pages/searches/show',
-                {books: filteredSearchResults, searchTitle, searchAuthor},
-                );
+                res.render('pages/searches/show', {books: filteredSearchResults,searchTitle,searchAuthor}, );
             };
-            function runFilter(){
+
+            function runFilter() {
                 filteredSearchResults = bookItems.map((data) => new bookSearch(data));
             };
-            
-            //////////// forEach Method
-            // let filteredSearchResults = [];
-            // bookItems.forEach(data => {
-                //     let constructedBookItems = new bookSearch(data);
-                //     filteredSearchResults.push(constructedBookItems);
-                // });
-                
-                
-                function bookSearch(obj) {
-                    this.title = obj.volumeInfo.title;
-                    this.author = ((obj.volumeInfo.authors) ? obj.volumeInfo.authors : 'No author provided') || 'Error, no author';
-                    this.description = ((obj.volumeInfo.description) ? obj.volumeInfo.description : 'No description provided') || 'Error, no description';
-                    this.image = ((obj.volumeInfo.imageLinks) ? obj.volumeInfo.imageLinks.thumbnail.replace("http://", "https://") : 'https://i.imgur.com/J5LVHEL.jpg') || 'error no thumbnail';
-                    this.isbn1 = ((obj.volumeInfo.industryIdentifiers) ? obj.volumeInfo.industryIdentifiers[0] : 'no isbn') || 'error no isbn';
-                    this.isbn2 = ((obj.volumeInfo.industryIdentifiers) ? obj.volumeInfo.industryIdentifiers[1] : 'no isbn') || 'error no isbn';
-                    this.preview = ((obj.volumeInfo.previewLink) ? obj.volumeInfo.previewLink.replace("http://", "https://") : 'no preview link') || 'error no preview';
-                };
-                
-                // console.log('filteredSearchResults at: ',filteredSearchResults);
+
+            function bookSearch(obj) {
+                this.title = obj.volumeInfo.title;
+                this.author = ((obj.volumeInfo.authors) ? obj.volumeInfo.authors : 'No author provided') || 'Error, no author';
+                this.description = ((obj.volumeInfo.description) ? obj.volumeInfo.description : 'No description provided') || 'Error, no description';
+                this.image = ((obj.volumeInfo.imageLinks) ? obj.volumeInfo.imageLinks.thumbnail.replace("http://", "https://") : 'https://i.imgur.com/J5LVHEL.jpg') || 'error no thumbnail';
+                this.isbn1 = ((obj.volumeInfo.industryIdentifiers) ? obj.volumeInfo.industryIdentifiers[0] : 'no isbn') || 'error no isbn';
+                this.isbn2 = ((obj.volumeInfo.industryIdentifiers) ? obj.volumeInfo.industryIdentifiers[1] : 'no isbn') || 'error no isbn';
+                this.preview = ((obj.volumeInfo.previewLink) ? obj.volumeInfo.previewLink.replace("http://", "https://") : 'no preview link') || 'error no preview';
+            };
+
         })
-        
+
 };
-    
+
 //////////// 404 HANDLER
 function handleNotFound(req, res) {
     res.status(404).send('Error 404: Something went wrong yo!');
@@ -126,14 +116,14 @@ function handleSearchNotFound(req, res) {
 app.listen(PORT, () => console.log(`App is listening on ${PORT}`));
 
 
-    
-    /////////////////////// OLD CODE SAVED FOR EXAMPLES ///////////////////////
-    
-    // res.send(`The book title that you searched for was: ${req.body.title} by author: ${req.body.author}`);
-    // function APIsearchHandler(userSearch, response) {
-        //     const API = `https://www.googleapis.com/books/v1/volumes?q=${req.body.title}`;
-        
-        //     console.log('//////// Searching API... ////////')
+
+/////////////////////// OLD CODE SAVED FOR EXAMPLES ///////////////////////
+
+// res.send(`The book title that you searched for was: ${req.body.title} by author: ${req.body.author}`);
+// function APIsearchHandler(userSearch, response) {
+//     const API = `https://www.googleapis.com/books/v1/volumes?q=${req.body.title}`;
+
+//     console.log('//////// Searching API... ////////')
 //     superagent
 //         .get(API)
 //         .then(APIdata => {
@@ -148,3 +138,11 @@ app.listen(PORT, () => console.log(`App is listening on ${PORT}`));
 //     console.log(req.body);
 //     res.send(`The book title that you searched for was: ${req.body.title} by author: ${req.body.author} `);
 // });
+
+
+//////////// forEach Method
+// let filteredSearchResults = [];
+// bookItems.forEach(data => {
+//         let constructedBookItems = new bookSearch(data);
+//         filteredSearchResults.push(constructedBookItems);
+//     });
