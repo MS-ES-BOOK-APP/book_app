@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head> 
-    <title>newbook</title>
+    <title>Search Results</title>
     <link rel="stylesheet" href="../styles/reset.css">
     <link rel="stylesheet" href="../styles/base.css">
     <link rel="stylesheet" href="../styles/layout.css">
@@ -14,26 +14,51 @@
             <h1>Best Books</h1>
             <section class="menu">menu</section>
         </nav>
+    
+    <h2>Search Query: </h2>
+    <div>Title: <%= searchTitle %> </div>
+    <div>Author: <%= searchAuthor %> </div>
+        
+        
         <div class="page_title">
             <h2>Search Results:</h2>
         </div>
+        
         <div class="form">
-             <form class="flex-grid" method="post" action="/searches/show">
+          
+        <form method="post" action="/searches">
+          <div>
+            <input name="title" placeholder="Book Title"></input>
+          </div>
+          <div>
+            <input name="author" placeholder="Book Author"></input>
+          </div>
+            <div><button type="submit">Search</button>
+          </div>
+        </form>
+        
+             <form class="flex-grid" method="post" action="/searches">
                 <div>
+
                 <% books.forEach( book => { %>
                     <ul> 
                         <section class="section1"><img src="<%= book.image;  %>"></section>
                         <section class="section2"></section><h3>Title: <%= book.title;  %> </h3></section>
                         <section class="section3">Author: <%= book.author;  %></section>
                         <section class="section4">Description: <%= book.description;  %></section>
-                        <section class="section5">Isbn: <%= book.isbn.identifier;  %></section>
+                        <h4>ISBN NUMBER</h4>
+                        <p>TYPE: <%= book.isbn1.type;  %></p>
+                        <section class="section5">Isbn: <%= book.isbn1.identifier;  %></section>
+                        <a href="<%= book.preview %>"> Preview the Book Online! </a>
                     </ul>
                     <br>
                 <% }); %>
                 </div>
-           
             </form>
+        
+        
         </div>
+        
         <footer>End</footer>
     </div>
 
