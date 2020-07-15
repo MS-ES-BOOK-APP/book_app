@@ -25,16 +25,6 @@
 -- );
 
 
--- \-- List columns in all tables whose name is like 'TableName'
--- SELECT 
---     TableName = tbl.TABLE_SCHEMA + '.' + tbl.TABLE_NAME, 
---     ColumnName = col.COLUMN_NAME, 
---     ColumnDataType = col.DATA_TYPE
--- FROM INFORMATION_SCHEMA.TABLES tbl
--- INNER JOIN INFORMATION_SCHEMA.COLUMNS col 
---     ON col.TABLE_NAME = tbl.TABLE_NAME
---     AND col.TABLE_SCHEMA = tbl.TABLE_SCHEMA
 
--- WHERE tbl.TABLE_TYPE = 'BASE TABLE' and tbl.TABLE_NAME like '%TableName%'
--- GO
-
+-- ///////////// View Data in Table 'books'
+-- SELECT * FROM books;
