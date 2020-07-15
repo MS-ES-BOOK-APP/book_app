@@ -1,22 +1,36 @@
 <!DOCTYPE html>
 <html>
-<head> <title>BookApp</title>
-    <link rel="stylesheet" href="../styles/reset.css">
-    <link rel="stylesheet" href="../styles/base.css">
-    <link rel="stylesheet" href="../styles/layout.css">
-    <link rel="stylesheet" href="../styles/modules.css">
-</head>
+    <head> 
+      <%- include('../layout/head')%>
+    </head>
 
 <body>
-    <div class="flex-grid">
-      <div>
-        <header class="header-container">
-          <h1 class="h1">Best Boooks</h1>
-        </header>
-      </div>
+      <%- include('../layout/header')%>
          <div>
            <button type="submit" onClick="location.href='/searches/new'">Find a book</button>
          </div>
     </div>
+    <p>Book Count: <%= bookCount  %></p>
+    <form class="flex-grid" method="post" action="/searches">
+      <div>
+        <% SQLbooks.forEach( book => { %>
+          <ul> 
+              <section class="section1"><img src="<%= book.image_url;  %>"></section>
+              <section class="section2"></section><h3>Title: <%= book.title;  %> </h3></section>
+              <section class="section3">Author: <%= book.author;  %></section>
+              <section class="section4">Description: <%= book.description;  %></section>
+              <h4>ISBN NUMBER</h4>
+              <section class="section5">Isbn: <%= book.isbn;  %></section>
+          </ul>
+          <br>
+      <% }); %>
+
+
+
+      </div>
+  </form>
+
+<footer></footer>
   </body>
 </html>
+

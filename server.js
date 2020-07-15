@@ -13,20 +13,21 @@ const morgan = require('morgan');
 const app = express();
 app.set('view engine', 'ejs');
 const PORT = process.env.PORT || 3000;
+const client = new pg.Client(process.env.SQL_URL);
 
 /////////////////////// APPLICATION MIDDLEWARE (HELPERS)
 /////////////////////// CORS
 app.use(cors());
 
 /////////////////////// MORGAN - REQUEST LOGGER - SHOWS MORE DETAIL ON EVERY PAGE LOAD.
-app.use(morgan("dev"));
+app.use(morgan('dev'));
 
 /////////////////////// NEED THIS IN ORDER TO DEAL WITH FORMS.
 app.use(express.urlencoded({
     extended: true
 }));
 
-/////////////////////// ROUTE DEFINITIONS
+/////////////////////// ROUTE DEFINITIONS/CALLBACKS
 app.use(express.static('./public'));
 
 app.get('/', indexEjsHandler);
@@ -35,6 +36,7 @@ app.post('/searches', searchResultHandler);
 app.get('/bad', (req, res) => {
     throw new Error('Testing Forced Errors');
 });
+
 
 // app.get('/example', handleExample );
 app.use('*', handleNotFound);
@@ -45,12 +47,22 @@ app.use(handleError);
 
 //////////// SERVER HANDLER
 function indexEjsHandler(req, res) {
-    res.status(200).render('pages/index');
+    let SQL =  `SELECT * FROM books`;
+    return client.query(SQL)
+    .then(results => {
+        console.log(results.rows);
+        let SQLdata = results.rows;
+        let bookCount = results.rowCount;
+        res.status(200).render('pages/index', {SQLbooks: SQLdata, bookCount});
+    })
+    .catch(error => handleError(error,res));
 };
 
 //////////// SEARCH PAGE HANDLER
 function searchesPageHandler(req, res) {
+    
     res.render('pages/searches/new');
+
 };
 
 //////////// SEARCH RESULT HANDLER
@@ -115,6 +127,11 @@ function handleSearchNotFound(req, res) {
 //////////// PORT LISTENER
 app.listen(PORT, () => console.log(`App is listening on ${PORT}`));
 
+client.connect(() => {
+    app.listen(PORT, () => {
+        console.log(`listening on port ${PORT}`);
+    })
+})
 
 
 /////////////////////// OLD CODE SAVED FOR EXAMPLES ///////////////////////

@@ -21,6 +21,7 @@ John Cokos - Lead Instructor
 Ray Ruazol - Assistant Instructor
 Michelle Salazar - Student A/Soft. Dev./Author A
 Enoch Strok - Student B/Soft. Dev./Author B
+Ryan Geddes - Student /Soft. Dev.: Shared ternary operator code for fixing error in object data constructor. 'this.isbn = ((obj.volumeInfo.industryIdentifiers) ? obj.volumeInfo.industryIdentifiers : 'no isbn') || 'error no isbn';'
 
 
 ## Features History ##
@@ -43,6 +44,20 @@ Enoch Strok - Student B/Soft. Dev./Author B
 **Finish time:** 5:48AM 07/13/2020
 **Actual time needed to complete:** 9 hours 48 minutes!!!!
 **Notes:** App is complete! Except the CSS!
+
+**Number and name of feature:** lab_12: Item#1in Trello
+**Estimate of time needed to complete:** 8-12 Hours.
+**Start time:** 9:30PM 07/13/2020
+**Finish time:** 
+**Actual time needed to complete:**
+**Notes:** We will be: 
+--Adding a SQL server into the mix.
+--Seting up the tables and structure.
+--Adding functionality to save book searches into db.
+--Be able to recall/view the "library" of books that we saved to the db.
+--Sending that DB to Heroku.
+
+
 
 ## Resources
 **FrontRow** 
